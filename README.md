@@ -40,3 +40,67 @@
 <p>Treat unhealthy patients in each room. And check for the unhealthy patients in random room</p>
 <h3>STEP 5:</h3>
 <p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
+
+## PROGRAM
+```import random
+import time
+
+class HealthMonitoringAgent:
+    def _init_(self, patient_data, sensors, actuators):
+        self.patient_data = patient_data
+        self.sensors = sensors
+        self.actuators = actuators
+
+    def monitor_health(self):
+        print(f"Monitoring health for patient: {self.patient_data['name']}")
+
+        while True:
+            current_health_state = self.sensors.get_health_state()
+            action = self.choose_action(current_health_state)
+
+            print("Current Health State:", current_health_state)
+            self.actuators.perform_action(action)
+
+            if action == "No specific action needed":
+                print("Patient is stable. Monitoring stopped.")
+                break
+
+            time.sleep(1)  # wait for 1 second before next reading
+
+    def choose_action(self, current_health_state):
+        if current_health_state['heart_rate'] > 120:
+            return "Alert healthcare provider: High heart rate detected"
+        elif current_health_state['blood_pressure'] > 140:
+            return "Alert healthcare provider: High blood pressure detected"
+        elif current_health_state['temperature'] > 38:
+            return "Recommend rest and monitor temperature"
+        else:
+            return "No specific action needed"
+
+class HealthSensors:
+    def get_health_state(self):
+        return {
+            'heart_rate': random.randint(60, 150),
+            'blood_pressure': random.randint(90, 160),
+            'temperature': round(random.uniform(36.0, 38.5), 1)
+        }
+
+class HealthActuators:
+    def perform_action(self, action):
+        print("Action:", action)
+
+if _name_ == "_main_":
+    patient_data = {'patient_id': 123, 'name': 'John Doe', 'age': 35}
+
+    sensors = HealthSensors()
+    actuators = HealthActuators()
+
+    agent = HealthMonitoringAgent(patient_data, sensors, actuators)
+    agent.monitor_health()
+```
+
+## OUTPUT
+<img width="927" height="126" alt="image" src="https://github.com/user-attachments/assets/3f4c4fa2-cdcc-4efe-ba03-1faba1d2c4db" />
+
+## RESULT
+Sccessfully developed an AI agent for given problem
